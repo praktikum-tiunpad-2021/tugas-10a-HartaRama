@@ -49,7 +49,7 @@ class graph {
   }
 
   void remove_vertex(const VertexType &val) {
-    // TODO: Implementasikan!
+    _adj_list.erase(val);
   }
 
   /**
@@ -59,7 +59,8 @@ class graph {
    * @param val2 nilai vertex 2
    */
   void add_edge(const VertexType &val1, const VertexType val2) {
-    // TODO: Implementasikan!
+    _adj_list[val1].insert(val2);
+    _adj_list[val2].insert(val1);
   }
 
   /**
@@ -68,7 +69,14 @@ class graph {
    * @param val nilai dari vertex yang akan dihapus
    */
   void remove_edge(const VertexType &val1, const VertexType &val2) {
-    // TODO: Implementasikan!
+    auto it = std::find(_adj_list[val1].begin(), _adj_list[val1].end(), val2);
+    if (it != _adj_list[val1].end()) {
+      _adj_list[val1].erase(it);
+    }
+    it = std::find(_adj_list[val2].begin(), _adj_list[val2].end(), val1);
+    if (it != _adj_list[val2].end()) {
+      _adj_list[val2].erase(it);
+    }
   }
 
   /**
@@ -80,7 +88,7 @@ class graph {
    * @return jumlah node pada graph
    */
   size_t order() const {
-    // TODO: Implementasikan!
+    return _adj_list.size();
   }
 
   /**
@@ -92,7 +100,15 @@ class graph {
    * @return vertex-vertex saling bertetangga
    */
   bool is_edge(const VertexType &val1, const VertexType &val2) const {
-    // TODO: Implementasikan!
+    if (_adj_list.find(val2) == _adj_list.end())
+      return false;
+    if (_adj_list.find(val1) == _adj_list.end())
+      return false;
+    if (_adj_list.at(val1).find(val2) == _adj_list.at(val1).end())
+      return false;
+    if (_adj_list.at(val2).find(val1) == _adj_list.at(val1).end())
+      return false;
+    return true;
   }
 
   /**
